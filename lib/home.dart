@@ -84,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 50,
             ),
+
             Center(
               child: _loading
                   ? Container(
@@ -101,20 +102,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         children: <Widget>[
                           //To display the image that the user picked
-
                           Column(
                             children: [
                               Image.file(_image),
-                              Text("Error"),
                             ],
                           ),
                           SizedBox(
                             height: 20,
                           ),
-                          Text(
-                            "${_output[0]["label"]}",
-                            style: TextStyle(color: Colors.black, fontSize: 20),
-                          ),
+                          _output != null
+                              ? Text(
+                                  '${_output[0]['label']}',
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                )
+                              : Container(),
                           SizedBox(
                             height: 10,
                           ),
