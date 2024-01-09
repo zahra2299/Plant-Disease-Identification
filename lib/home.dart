@@ -115,8 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   '${_output[0]['label']}',
                   style: const TextStyle(
                       color: Colors.black, fontSize: 20),
-                ),
-                    : Container(),
+                )
+                              : Container(),
                           SizedBox(
                             height: 10,
                           ),
