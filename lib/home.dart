@@ -105,18 +105,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           Column(
                             children: [
                               Image.file(_image),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          _output != null
-                              ? Text(
-                                  '${_output[0]['label']}',
-                                  style: const TextStyle(
-                                      color: Colors.black, fontSize: 20),
-                                )
-                              : Container(),
+                ],
+              ),
+                SizedBox(
+                  height: 20,
+                ),
+                _output != null
+                    ? Text(
+                  '${_output[0]['label']}',
+                  style: const TextStyle(
+                      color: Colors.black, fontSize: 20),
+                ),
+                    : Container(),
                           SizedBox(
                             height: 10,
                           ),
