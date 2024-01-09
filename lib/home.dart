@@ -42,8 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   loadModel() async {
     await Tflite.loadModel(
-      model: "assets/models/model_unquant.tflite",
-      labels: "assets/models/labels.txt",
+      model: "assets/keras_model.h5",
+      labels: "assets/labels.txt",
     );
   }
 
