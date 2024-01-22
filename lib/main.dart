@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:plant_disease_identification_app/ency_screen.dart';
 import 'package:plant_disease_identification_app/home.dart';
+import 'package:plant_disease_identification_app/plant_details.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      initialRoute: HomeScreen.routeName,
+      routes: {
+        HomeScreen.routeName: (context) => HomeScreen(),
+        EncyScreen.routeName: (context) => EncyScreen(),
+        PlantDetails.routeName: (context) => PlantDetails(),
+      },
     );
   }
 }
