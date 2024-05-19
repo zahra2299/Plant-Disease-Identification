@@ -4,14 +4,23 @@ import 'package:plant_disease_identification_app/plant_model.dart';
 
 class EncyScreen extends StatelessWidget {
   static const String routeName = "EncyScreen";
-  List<String> plantNames = [
+  List<String> plantsNames = [
     "Tomato",
     "Strawberry",
     "Pepper",
     "Peach",
     "Orange",
     "Grape",
-    "Apple"
+    "Apple",
+    "Basil",
+    "Lavender",
+    "Rosemary",
+    "Mint",
+    "Cherry",
+    "Blueberries",
+    "Raspberries",
+    "Aloe Vera",
+    "Peace Lily"
   ];
 
   @override
@@ -23,12 +32,12 @@ class EncyScreen extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            Image.asset("assets/images/ency.jpg"),
+            Image.asset("assets/images/ency pic.jpeg"),
             Expanded(
               child: ListView.separated(
-                separatorBuilder: (context, index) => Divider(
+                separatorBuilder: (context, index) => const Divider(
                   thickness: 1,
-                  color: Colors.blueGrey,
+                  color: Color(0xff384b2d),
                   endIndent: 40,
                   indent: 40,
                 ),
@@ -36,16 +45,16 @@ class EncyScreen extends StatelessWidget {
                   return InkWell(
                     onTap: () {
                       Navigator.pushNamed(context, PlantDetails.routeName,
-                          arguments: PlantModel(plantNames[index], index));
+                          arguments: PlantModel(plantsNames[index], index));
                     },
                     child: Center(
                         child: Text(
-                      plantNames[index],
-                      style: TextStyle(color: Colors.blueGrey, fontSize: 30),
+                      plantsNames[index],
+                      style: TextStyle(color: Color(0xff3e5532), fontSize: 25),
                     )),
                   );
                 },
-                itemCount: plantNames.length,
+                itemCount: plantsNames.length,
               ),
             )
           ],

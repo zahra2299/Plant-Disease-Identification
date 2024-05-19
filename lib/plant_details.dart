@@ -10,12 +10,12 @@ class PlantDetails extends StatefulWidget {
 }
 
 class _PlantDetailsState extends State<PlantDetails> {
-  List<String> _lines = [];
+  List<String> plantContent = [];
 
   loadFile(int index) async {
     String file = await rootBundle.loadString("assets/files/${index + 1}.txt");
     List<String> lines = file.split("\n");
-    _lines = lines;
+    plantContent = lines;
     setState(() {});
   }
 
@@ -23,13 +23,13 @@ class _PlantDetailsState extends State<PlantDetails> {
   Widget build(BuildContext context) {
     var args = ModalRoute.of(context)?.settings.arguments as PlantModel;
     //to stop loading file infinitely
-    if (_lines.isEmpty) {
+    if (plantContent.isEmpty) {
       loadFile(args.index);
     }
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/background.jpeg"),
+          image: AssetImage("assets/images/green ground.jpg"),
           fit: BoxFit.fill,
         ),
       ),
@@ -38,15 +38,35 @@ class _PlantDetailsState extends State<PlantDetails> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           centerTitle: true,
-          title: Text(args.name,
-              style: TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.w600,
-              )),
+          title: Stack(
+            children: <Widget>[
+              // Stroked text as border.
+              Text(
+                args.name,
+                style: TextStyle(
+                  fontSize: 40,
+                  foreground: Paint()
+                    ..style = PaintingStyle.stroke
+                    ..strokeWidth = 4
+                    ..color = Color(0xff586350),
+                ),
+              ),
+              // Solid text as fill.
+              Text(
+                args.name,
+                style: const TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xffd7c2ab),
+                ),
+              ),
+            ],
+          ),
         ),
         body: Padding(
           padding: EdgeInsets.all(18),
           child: Card(
+            color: Color(0xffd7c2ab),
             shape: OutlineInputBorder(
               borderRadius: BorderRadius.circular(18),
               borderSide: BorderSide(color: Colors.grey),
@@ -56,12 +76,12 @@ class _PlantDetailsState extends State<PlantDetails> {
               child: ListView.builder(
                   itemBuilder: (context, index) {
                     return Text(
-                      _lines[index],
+                      plantContent[index],
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                     );
                   },
-                  itemCount: _lines.length),
+                  itemCount: plantContent.length),
             ),
           ),
         ),

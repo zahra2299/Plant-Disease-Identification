@@ -5,8 +5,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:plant_disease_identification_app/ency_screen.dart';
 import 'package:tflite_v2/tflite_v2.dart';
 
-// import 'package:tflite/tflite.dart';
-
 class HomeScreen extends StatefulWidget {
   static const String routeName = "Home";
 
@@ -27,51 +25,24 @@ class _HomeScreenState extends State<HomeScreen> {
     loadModel();
   }
 
-  bool _isModelRunning = false;
-
   detectImage(File image) async {
-    if (_isModelRunning) return; // Skip if model is already running
-
-    _isModelRunning = true;
-    try {
-      var output = await Tflite.runModelOnImage(
-          path: image.path,
-          numResults: 8,
-          threshold: 0.6,
-          imageMean: 127.5,
-          imageStd: 127.5);
-      setState(() {
-        _output = output!;
-        _loading = false;
-        diseaseName = _output[0]['label'];
-      });
-      if (output == null) {
-        print("Model failed to produce output");
-      }
-    } finally {
-      _isModelRunning = false; // Release for next run
+    var output = await Tflite.runModelOnImage(
+        path: image.path,
+        numResults: 8,
+        threshold: 0.6,
+        imageMean: 127.5,
+        imageStd: 127.5);
+    setState(() {
+      _output = output!;
+      _loading = false;
+      diseaseName = _output[0]['label'];
+    });
+    if (output == null) {
+      print("Model failed to produce output");
     }
-
-    // var output = await Tflite.runModelOnImage(
-    //     path: image.path,
-    //     numResults: 8,
-    //     threshold: 0.6,
-    //     imageMean: 127.5,
-    //     imageStd: 127.5);
-    // setState(() {
-    //   _output = output!;
-    //   _loading = false;
-    // });
-    // if (output == null) {
-    //   print("Model failed to produce output");
-    // }
   }
 
   loadModel() async {
-    // await Tflite.loadModel(
-    //   model: "assets/keras_model.h5",
-    //   labels: "assets/labels.txt",
-    // );
     try {
       String? tfResponse = await Tflite.loadModel(
         model: "assets/model_unquant.tflite",
@@ -95,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _image = File(image.path);
     });
-
     detectImage(_image);
   }
 
@@ -105,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _image = File(image.path);
     });
-
     detectImage(_image);
   }
 
@@ -151,19 +120,112 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ? Text(
                                     '${_output[0]['label']}',
                                     style: const TextStyle(
-                                        color: Colors.black, fontSize: 20),
+                                      color: Colors.black,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   )
                                 : Container(),
+                            if (diseaseName == 'Tomato Mosaic Virus')
+                              const Text(
+                                'Remove all infected plants and destroy them.\n'
+                                ' Monitor the rest of your plants closely, especially those that are located near infected plants.\n'
+                                'Disinfect gardening tools after every use. '
+                                'Keep a bottle of a weak bleach solution or other antiviral disinfectant to wipe your tools down with.',
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            if (diseaseName == 'Tomato Yellow Leaf Curl Virus')
+                              const Text(
+                                ' Removal and destruction of plants is recommended. Since weeds often act as hosts to the viruses, '
+                                'controlling weeds around the garden can reduce virus transmission by insects.',
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
+                              ),
                             if (diseaseName == 'Strawberry Leaf Scorch')
-                              Text(
-                                'Recommendations for Strawberry Leaf Scorch treatment...',
-                                style: TextStyle(color: Colors.grey),
+                              const Text(
+                                '- Use drip irrigation, remove infected leaves when practical, and be sure planting stock is clean.\n'
+                                '- Choose a growing area with environmental conditions that are not conducive to disease development.',
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
                               ),
                             if (diseaseName == 'Pepper Bell Bacterial Spot')
-                              Text(
-                                'Recommendations for Pepper Bell Bacterial Spot treatment...',
-                                style: TextStyle(color: Colors.grey),
+                              const Text(
+                                '- Apply copper-based fungicides or bactericides according to the manufacturer\'s instructions.\n '
+                                '- Avoid overhead watering, as it can splash bacteria from infected plants to healthy ones. Instead, use drip irrigation or water at the base of plants.',
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
                               ),
+                            if (diseaseName == 'Peach Bacterial Spot')
+                              const Text(
+                                '- Dormant sprays are essential in the fall to protect the stems of your peach tree.\n '
+                                '- Use a copper-based fungicide spray on the tree\'s leaves when they begin to fall.',
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            if (diseaseName == 'Orange Haunglongbing')
+                              const Text(
+                                '- Use oxytetracycline and streptomycin in rotation.\n '
+                                '- Retreatment interval is a minimum of 21 days.',
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            if (diseaseName == 'Grape Black Rot')
+                              const Text(
+                                '- Apply fungicides preventatively according to a regular schedule, '
+                                'starting at bud break and continuing throughout the growing season. '
+                                'Fungicides containing active ingredients such as mancozeb, captan, myclobutanil, '
+                                'or azoxystrobin can help control black rot. '
+                                'Follow label instructions carefully and rotate fungicides to prevent resistance.',
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            if (diseaseName == 'Apple Black Rot')
+                              const Text(
+                                '- Start a full-rate protectant spray program early in the season with copper-based products, lime-sulfur or Daconil.',
+                                style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            // if (diseaseName == 'Cherry Powdery Mildew')
+                            //   const Text(
+                            //     '- Start by pruning infected branches and leaves, and lean up fallen leaves and debris around the cherry tree regularly. This reduces the likelihood of the disease spreading or overwintering.\n'
+                            //     '- Apply fungicides specifically labeled for powdery mildew control on cherries',
+                            //     style: TextStyle(color: Colors.green,
+                            //         fontSize: 20,
+                            //         fontWeight: FontWeight.w400),
+                            //   ),
+                            // if (diseaseName == 'Potato Late Blight')
+                            //   const Text(
+                            //     '- Apply fungicides preventatively before late blight symptoms appear, especially during periods of warm, humid weather.\n'
+                            //     '- Ensure proper spacing between potato plants to promote air circulation, which reduces humidity and inhibits disease development.',
+                            //     style: TextStyle(color: Colors.green,
+                            //         fontSize: 20,
+                            //         fontWeight: FontWeight.w400),
+                            //   ),
+                            // if (diseaseName == 'Corn Northern Leaf Blight')
+                            //   const Text(
+                            //     '- Remove and destroy any NLB-infected corn debris from fields and surrounding areas to prevent the spread of the disease to healthy plants.\n'
+                            //     '- Apply fungicides to protect corn plants from Northern leaf blight. Fungicides containing active ingredients such as azoxystrobin, pyraclostrobin, or trifloxystrobin are effective against NLB.',
+                            //     style: TextStyle(color: Colors.green,
+                            //         fontSize: 20,
+                            //         fontWeight: FontWeight.w400),
+                            //   ),
                             SizedBox(
                               height: 10,
                             ),
@@ -185,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 18),
                         decoration: BoxDecoration(
-                          color: Colors.blueGrey,
+                          color: Color(0xff82a974),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text("Camera",
@@ -205,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 18),
                         decoration: BoxDecoration(
-                          color: Colors.blueGrey,
+                          color: Color(0xff82a974),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text("Select a photo",
@@ -227,7 +289,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 18),
                         decoration: BoxDecoration(
-                          color: Colors.blueGrey,
+                          color: Color(0xff82a974),
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text("Encyclopedia",
@@ -235,6 +297,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.white,
                             )),
                       ),
+                    ),
+                    SizedBox(
+                      height: 5,
                     ),
                   ],
                 ),
